@@ -1,0 +1,39 @@
+﻿@page "/"
+@namespace LabCheckin.Server.Pages
+@using LabCheckin.Client
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>实验室助理中心</title>
+    <base href="/" />
+    <link rel="stylesheet" href="css/preloader.min.css" />
+    <link rel="stylesheet" href="css/fabric-icons-inline.css" />
+    <link rel="stylesheet" href="css/fabric.min.css" />
+    <link rel="stylesheet" href="css/fabric-icons-inline.css" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="LabCheckin.Client.styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <component type="typeof(App)" render-mode="WebAssemblyPrerendered" />
+
+    <div id="blazor-error-ui">
+        发生了一些错误，请重新加载网页。
+        <a href="" class="reload">重新加载</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="js/quill.min.js"></script>
+    <script src="_content/BlazorFluentUI.BFUBaseComponent/blazorFluentUi.min.js"></script>
+    <script src="_content/BlazorFluentUI.BFURichTextEditor/richTextEditor.js"></script>
+</body>
+</html>
