@@ -7,7 +7,7 @@ Check-in website for Sun Yat-sen University Information Laboratory Center
 # Stack
 - ASP.NET Core
 - Entity Framework Core
-- Blazor Webassembly with Server Prereder
+- Blazor Webassembly with Server Prerender
 
 # Build
 ```
