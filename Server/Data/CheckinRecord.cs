@@ -1,4 +1,4 @@
-﻿using LabCheckin.Shared;
+﻿using LabCheckin.Shared.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

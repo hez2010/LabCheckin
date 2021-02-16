@@ -1,4 +1,4 @@
-﻿namespace LabCheckin.Shared
+﻿namespace LabCheckin.Shared.Models
 {
     public enum WorkType
     {

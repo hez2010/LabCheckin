@@ -1,5 +1,14 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<h1>排班表</h1>
 
-Welcome to your new app.
+<BFUDropdown ItemsSource="classrooms" SelectedOption="classrooms[0]" Style="width: 200px" Label="实验室" />
+
+@code {
+    private readonly List<BFUDropdownOption> classrooms =
+        Enum.GetValues<Room>().Select(i => new BFUDropdownOption
+        {
+            Text = Enum.GetName<Room>(i)!,
+            Key = i.ToString()
+        }).ToList();
+}

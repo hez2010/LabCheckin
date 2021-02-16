@@ -1,0 +1,24 @@
+﻿@page "/profile"
+<h1>个人信息</h1>
+
+@if (UserInfo is null)
+{
+    <p>未登录账户</p>
+}
+else
+{
+    <p>编号：@UserInfo.Id</p>
+    <p>用户名：@UserInfo.UserName</p>
+    <p>姓名：@UserInfo.Name</p>
+
+    <br />
+    <BFUTextField Label="原密码" InputType="InputType.Password" />
+    <BFUTextField Label="新密码" InputType="InputType.Password" />
+    <BFUTextField Label="确认密码" InputType="InputType.Password" />
+    <br />
+    <BFUPrimaryButton>修改密码</BFUPrimaryButton>
+}
+
+@code {
+    [CascadingParameter(Name = "UserInfo")] private UserInfo? UserInfo { get; set; }
+}

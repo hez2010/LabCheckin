@@ -1,5 +1,5 @@
-﻿using LabCheckin.Shared;
-using LabCheckin.Shared.Extensions;
+﻿using LabCheckin.Shared.Extensions;
+using LabCheckin.Shared.Models;
 using LabCheckin.Shared.Services;
 using System.Net.Http;
 using System.Net.Http.Json;

@@ -1,37 +1,33 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">LabCheckin</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>
-    </ul>
-</div>
+﻿<BFUNav>
+    <BFUNavLinkGroup Name="主页" CollapseByDefault="false">
+        <BFUNavLink Name="排班" Url="/" NavMatchType="NavMatchType.AnchorIncluded" Id="" />
+        <BFUNavLink Name="签到" Url="/checkin" NavMatchType="NavMatchType.AnchorIncluded" Id="checkin" />
+    </BFUNavLinkGroup>
+    <BFUNavLinkGroup Name="薪酬" CollapseByDefault="false">
+        <BFUNavLink Name="薪酬计算" Url="/salary" NavMatchType="NavMatchType.AnchorIncluded" Id="salary" />
+        <BFUNavLink Name="历史薪酬记录" Url="/history" NavMatchType="NavMatchType.AnchorIncluded" Id="history" />
+    </BFUNavLinkGroup>
+    <BFUNavLinkGroup Name="账户" CollapseByDefault="false">
+        @if (UserInfo is null)
+        {
+            <BFUNavLink Name="登录" Url="/signin" NavMatchType="NavMatchType.AnchorIncluded" Id="signin" />
+        }
+        else
+        {
+            <BFUNavLink Name="个人信息" Url="/profile" NavMatchType="NavMatchType.AnchorIncluded" Id="profile" />
+            <BFUNavLink Name="退出" OnClick="SignOutAsync" />
+        }
+    </BFUNavLinkGroup>
+</BFUNav>
 
 @code {
-    private bool collapseNavMenu = true;
+    [CascadingParameter(Name = "UserInfo")] private UserInfo? UserInfo { get; set; }
+    [CascadingParameter(Name = "SetUserInfo")] private Action<UserInfo?>? SetUserInfo { get; set; }
+    [Inject] IUserService UserService { get; set; } = default!;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    private async Task SignOutAsync()
     {
-        collapseNavMenu = !collapseNavMenu;
+        await UserService.SignOutAsync();
+        SetUserInfo?.Invoke(null);
     }
 }

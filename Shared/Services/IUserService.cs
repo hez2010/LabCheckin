@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using LabCheckin.Shared.Models;
+using System.Threading.Tasks;
 
 namespace LabCheckin.Shared.Services
 {
