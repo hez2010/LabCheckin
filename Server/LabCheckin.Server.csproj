@@ -30,4 +30,9 @@
 		<Watch Include="..\**\*.cs" />
 		<Watch Remove="..\**\*.g.cs" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Watch Remove="Controllers\CheckinController.cs" />
+	  <Watch Remove="Services\CheckinService.cs" />
+	</ItemGroup>
 </Project>

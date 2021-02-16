@@ -24,11 +24,13 @@ namespace LabCheckin.Server.Controllers
         public async Task<ResponseModel<UserInfo>> SignInAsync([FromBody] SignInModel model)
         {
             var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
+
             if (result.Succeeded)
             {
-                var userInfo = await userManager.FindByNameAsync(model.UserName);
-                return new JsonResultModel<UserInfo>(new(userInfo.Id, userInfo.UserName, userInfo.Name));
+                var user = await userManager.FindByNameAsync(model.UserName);
+                return new JsonResultModel<UserInfo>(new(user.Id, user.UserName, user.Name));
             }
+
             return new UnauthorizedModel<UserInfo>("用户名或密码不正确");
         }
 
@@ -42,8 +44,28 @@ namespace LabCheckin.Server.Controllers
             {
                 return new UnauthorizedModel<UserInfo>("未登录");
             }
-            var userInfo = await userManager.GetUserAsync(User);
-            return new JsonResultModel<UserInfo>(new(userInfo.Id, userInfo.UserName, userInfo.Name));
+
+            var user = await userManager.GetUserAsync(User);
+            return new JsonResultModel<UserInfo>(new(user.Id, user.UserName, user.Name));
+        }
+
+        [Route("password"), HttpPost]
+        public async Task<ResponseModel<bool>> ChangePasswordAsync([FromBody] ChangePasswordModel model)
+        {
+            if (!signInManager.IsSignedIn(User))
+            {
+                return new UnauthorizedModel<bool>("未登录");
+            }
+
+            var user = await userManager.GetUserAsync(User);
+            var result = await userManager.ChangePasswordAsync(user, model.OldPaassword, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return new JsonResultModel<bool>(true);
+            }
+
+            return new BadRequestModel<bool>("密码不正确");
         }
     }
 }

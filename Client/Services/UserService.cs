@@ -16,6 +16,13 @@ namespace LabCheckin.Client.Services
             this.httpClient = httpClient;
         }
 
+        public async Task<bool> ChangePasswordAsync(string oldPassword, string newPassword)
+        {
+            var response = await httpClient.PostAsJsonAsync("/api/users/password", new ChangePasswordModel(oldPassword, newPassword));
+            if (!response.IsSuccessStatusCode) return false;
+            return true;
+        }
+
         public async Task<UserInfo?> GetProfileAsync()
         {
             var response = await httpClient.GetAsync("/api/users/profile");
@@ -25,7 +32,7 @@ namespace LabCheckin.Client.Services
 
         public async Task<UserInfo?> SignInAsync(string userName, string password)
         {
-            var response = await httpClient.PostAsJsonAsync("/api/users/signin", new { UserName = userName, Password = password });
+            var response = await httpClient.PostAsJsonAsync("/api/users/signin", new SignInModel(userName, password, true));
             if (!response.IsSuccessStatusCode) return null;
             return await response.Content.ReadFromJsonAsyncWithExceptionHandled<UserInfo>();
         }

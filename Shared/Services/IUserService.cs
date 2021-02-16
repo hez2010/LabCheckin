@@ -8,5 +8,6 @@ namespace LabCheckin.Shared.Services
         Task<UserInfo?> SignInAsync(string userName, string password);
         Task SignOutAsync();
         Task<UserInfo?> GetProfileAsync();
+        Task<bool> ChangePasswordAsync(string oldPassword, string newPassword);
     }
 }

@@ -12,13 +12,46 @@ else
     <p>姓名：@UserInfo.Name</p>
 
     <br />
-    <BFUTextField Label="原密码" InputType="InputType.Password" />
-    <BFUTextField Label="新密码" InputType="InputType.Password" />
-    <BFUTextField Label="确认密码" InputType="InputType.Password" />
+    <BFUTextField Label="原密码" InputType="InputType.Password" @bind-Value="oldPassword" />
+    <BFUTextField Label="新密码" InputType="InputType.Password" @bind-Value="newPassword" />
+    <BFUTextField Label="确认密码" InputType="InputType.Password" @bind-Value="confirmPassword" />
     <br />
-    <BFUPrimaryButton>修改密码</BFUPrimaryButton>
+    <BFUPrimaryButton OnClick="ChangePasswordAsync" Disabled="submitting">修改密码</BFUPrimaryButton>
+
+    if (message is not null)
+    {
+        <p style="@style">@message</p>
+    }
 }
 
 @code {
     [CascadingParameter(Name = "UserInfo")] private UserInfo? UserInfo { get; set; }
+    [Inject] IUserService UserService { get; set; } = default!;
+
+    private string oldPassword = "", newPassword = "", confirmPassword = "";
+    private string? message;
+    private string style = "";
+    private bool submitting;
+
+    private async Task ChangePasswordAsync(MouseEventArgs args)
+    {
+        submitting = true;
+        try
+        {
+            if (newPassword != confirmPassword)
+            {
+                style = "color: red";
+                message = "两次输入的密码不一致";
+                return;
+            }
+
+            await UserService.ChangePasswordAsync(oldPassword, newPassword);
+            style = "";
+            message = "密码修改成功";
+        }
+        finally
+        {
+            submitting = false;
+        }
+    }
 }

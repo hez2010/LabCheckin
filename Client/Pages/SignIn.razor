@@ -6,10 +6,12 @@
 
 <br />
 
-<BFUPrimaryButton OnClick="SignIn_Clicked">登录</BFUPrimaryButton>
+<BFUPrimaryButton OnClick="SignIn_Clicked" Disabled="submitting">登录</BFUPrimaryButton>
 
-<br />
-<BFUText Style="color: red">@message</BFUText>
+@if (message is not null)
+{
+    <p style="color: red">@message</p>
+}
 
 @code {
     [CascadingParameter(Name = "SetUserInfo")] private Action<UserInfo?>? SetUserInfo { get; set; }
@@ -18,11 +20,20 @@
     private string userName = "";
     private string password = "";
     private string? message;
+    private bool submitting;
 
     private async Task SignIn_Clicked(MouseEventArgs args)
     {
-        var userInfo = await UserService.SignInAsync(userName, password);
-        SetUserInfo?.Invoke(userInfo);
-        message = userInfo is null ? "用户名或密码不正确" : null;
+        submitting = true;
+        try
+        {
+            var userInfo = await UserService.SignInAsync(userName, password);
+            SetUserInfo?.Invoke(userInfo);
+            message = userInfo is null ? "用户名或密码不正确" : null;
+        }
+        finally
+        {
+            submitting = false;
+        }
     }
 }

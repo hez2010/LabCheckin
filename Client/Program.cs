@@ -17,6 +17,7 @@ namespace LabCheckin.Client
 
             builder.Services.AddBlazorFluentUI();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ICheckinService, CheckinService>();
             builder.Services.AddTransient(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             await builder.Build().RunAsync();

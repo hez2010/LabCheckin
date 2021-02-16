@@ -24,6 +24,8 @@ namespace LabCheckin.Server.Services
             this.httpContextAccessor = httpContextAccessor;
         }
 
+        public Task<bool> ChangePasswordAsync(string oldPassword, string newPassword) => throw new NotImplementedException();
+
         public async Task<UserInfo?> GetProfileAsync()
         {
             var claim = httpContextAccessor.HttpContext?.User;

@@ -2,7 +2,9 @@
 
 <h1>排班表</h1>
 
-<BFUDropdown ItemsSource="classrooms" SelectedOption="classrooms[0]" Style="width: 200px" Label="实验室" />
+<BFUDropdown ItemsSource="classrooms" Placeholder="请选择一间实验室" OnChange="Classroom_Changed" Style="width: 200px" Label="实验室" />
+
+<p>暂未实现</p>
 
 @code {
     private readonly List<BFUDropdownOption> classrooms =
@@ -11,4 +13,11 @@
             Text = Enum.GetName<Room>(i)!,
             Key = i.ToString()
         }).ToList();
+
+    private Task Classroom_Changed(BFUDropdownChangeArgs args)
+    {
+        var room = Enum.Parse<Room>(args.Option.Key);
+
+        return Task.CompletedTask;
+    }
 }
