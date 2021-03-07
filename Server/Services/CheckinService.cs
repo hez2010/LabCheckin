@@ -1,13 +1,11 @@
-﻿using LabCheckin.Shared.Models;
-using LabCheckin.Shared.Services;
+﻿using LabCenter.Shared.Services;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace LabCheckin.Server.Services
+namespace LabCenter.Server.Services
 {
     public class CheckinService : ICheckinService
     {
-        public Task<bool> CheckInAsync(DateTime date, WorkType type, Room room, DateTime? startTime, DateTime? endTime, List<int>? classes, bool bonus, bool overtime, int? overtimeMinutes, string? overtimeReason, string? note) => throw new NotImplementedException();
+        public Task<bool> CheckInAsync(int workPlanId, bool overtime, int overtimeMinutes, string? note) => throw new NotImplementedException();
     }
 }

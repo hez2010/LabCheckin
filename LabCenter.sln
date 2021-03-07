@@ -2,11 +2,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.0.0
 MinimumVisualStudioVersion = 16.0.0.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabCheckin.Server", "Server\LabCheckin.Server.csproj", "{86D75A43-2C76-4748-A51C-C9F326006BD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabCenter.Server", "Server\LabCenter.Server.csproj", "{86D75A43-2C76-4748-A51C-C9F326006BD7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabCheckin.Client", "Client\LabCheckin.Client.csproj", "{397312A9-E9B5-47B2-8CA9-C6FA34A2C31F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabCenter.Client", "Client\LabCenter.Client.csproj", "{397312A9-E9B5-47B2-8CA9-C6FA34A2C31F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabCheckin.Shared", "Shared\LabCheckin.Shared.csproj", "{D27AE2B4-09CB-4CC5-847B-7F5F750228CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabCenter.Shared", "Shared\LabCenter.Shared.csproj", "{D27AE2B4-09CB-4CC5-847B-7F5F750228CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

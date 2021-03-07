@@ -1,7 +1,7 @@
-﻿using LabCheckin.Shared.Models;
+﻿using LabCenter.Shared.Models;
 using System.Threading.Tasks;
 
-namespace LabCheckin.Shared.Services
+namespace LabCenter.Shared.Services
 {
     public interface IUserService
     {

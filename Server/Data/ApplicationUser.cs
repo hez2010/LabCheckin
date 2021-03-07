@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
-namespace LabCheckin.Server.Data
+namespace LabCenter.Server.Data
 {
     public class ApplicationUser : IdentityUser
     {
         public string Name { get; set; } = default!;
         public bool Valid { get; set; }
         public int RemainingHours { get; set; }
+        public bool Admin { get; set; }
 
-        public virtual ICollection<CheckinRecord> Records { get; set; } = new HashSet<CheckinRecord>();
-        public virtual ICollection<MonthlySalary> Salaries { get; set; } = new HashSet<MonthlySalary>();
+        public IList<CheckinRecord> Records { get; set; } = default!;
+        public IList<MonthlySalary> Salaries { get; set; } = default!;
+        public IList<WorkPlan> Plans { get; set; } = default!;
     }
 }

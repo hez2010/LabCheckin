@@ -1,44 +1,9 @@
-﻿@page "/checkin"
-@using System.Collections.Immutable
-
-<h1>签到</h1>
-
-<BFUDatePicker Label="日期" Style="width: 300px" @bind-Value="date"></BFUDatePicker>
-<BFUChoiceGroup Label="类型" ItemsSource="workTypes" @bind-Value="selectedType" />
-<BFUDropdown ItemsSource="classrooms" @bind-SelectedOption="selectedRoom" Style="width: 300px" Label="实验室" />
-
-@if (selectedType == workTypes[0] || selectedType == workTypes[1])
+﻿<BFUCheckbox @bind-Checked="overtime" Label="加班"></BFUCheckbox>
+@if (overtime)
 {
-    <BFUDropdown Style="width: 300px" Label="节次" ItemsSource="classes" @bind-SelectedOptions="selectedClasses" MultiSelect="true"></BFUDropdown>
-    <br />
-    <BFUCheckbox @bind-Checked="overtime" Label="加班"></BFUCheckbox>
-    if (overtime)
-    {
-        <BFUTextField Style="width: 300px" @bind-Value="overtimeMinutes" Label="分钟数"></BFUTextField>
-        <BFUTextField Style="width: 300px" @bind-Value="overtimeReason" Label="理由"></BFUTextField>
-    }
+    <BFUTextField Label="加班分钟数" @bind-Value="overtimeMinutes"></BFUTextField>
 }
-else if (selectedType == workTypes[2])
-{
-    <BFUTextField Label="开始时间" Placeholder="HH:mm" @bind-Value="startTime" Style="width: 300px"></BFUTextField>
-    <BFUTextField Label="结束时间" Placeholder="HH:mm" @bind-Value="endTime" Style="width: 300px"></BFUTextField>
-}
-else
-{
-    <BFUTextField Label="原开始时间" Placeholder="HH:mm" @bind-Value="startTime" Style="width: 300px"></BFUTextField>
-    <BFUTextField Label="原结束时间" Placeholder="HH:mm" @bind-Value="endTime" Style="width: 300px"></BFUTextField>
-    <br />
-    <BFUCheckbox @bind-Checked="bonusWork" Label="1.5 倍工时"></BFUCheckbox>
-    <br />
-    <BFUCheckbox @bind-Checked="overtime" Label="加班"></BFUCheckbox>
-    if (overtime)
-    {
-        <BFUTextField Style="width: 300px" @bind-Value="overtimeMinutes" Label="分钟数"></BFUTextField>
-        <BFUTextField Style="width: 300px" @bind-Value="overtimeReason" Label="理由"></BFUTextField>
-    }
-}
-
-<BFUTextField Label="备注" @bind-Value="note" Multiline="true" Resizable="true" Style="width: 300px"></BFUTextField>
+<BFUTextField Label="备注" @bind-Value="note" Multiline="true" Resizable="true"></BFUTextField>
 <br />
 <BFUPrimaryButton Text="签到" OnClick="Checkin_Clicked" Disabled="submitting"></BFUPrimaryButton>
 
@@ -49,56 +14,21 @@ else
 
 @code {
     [Inject] private ICheckinService CheckinService { get; set; } = default!;
+    [Parameter] public int WorkPlanId { get; set; }
 
-    private readonly ImmutableList<string> workTypes = new List<string> { "随堂值班", "行政助理", "技术支持", "不定期需求" }.ToImmutableList();
-    private readonly ImmutableList<BFUDropdownOption> classes = Enumerable.Range(1, 11).Select(i => new BFUDropdownOption { Key = i.ToString(), Text = i.ToString() }).ToImmutableList();
-    private readonly List<BFUDropdownOption> classrooms =
-        Enum.GetValues<Room>().Select(i => new BFUDropdownOption
-        {
-            Text = Enum.GetName<Room>(i)!,
-            Key = i.ToString()
-        }).ToList();
-
-    private string selectedType;
-    private IEnumerable<IBFUDropdownOption> selectedClasses = new List<IBFUDropdownOption>();
-    private IBFUDropdownOption selectedRoom;
-    private DateTime date = DateTime.Now.Date;
-    private bool overtime, bonusWork;
+    private bool overtime;
     private string overtimeMinutes = "0";
-    private string? overtimeReason;
-    private string startTime = DateTime.Now.ToString("HH:mm"), endTime = DateTime.Now.ToString("HH:mm");
     private string? note;
     private string? message;
     private string style = "";
     private bool submitting;
-
-    public Checkin()
-    {
-        selectedType = workTypes[0];
-        selectedRoom = classrooms[0];
-    }
 
     private async Task Checkin_Clicked(MouseEventArgs args)
     {
         submitting = true;
         try
         {
-            var result = await CheckinService.CheckInAsync(date,
-                selectedType switch
-                {
-                    "随堂值班" => WorkType.Duty,
-                    "行政助理" => WorkType.Assistant,
-                    "技术支持" => WorkType.Technical,
-                    "不定期需求" => WorkType.Irregular,
-                    _ => throw new ArgumentException()
-                },
-                Enum.Parse<Room>(selectedRoom.Key),
-                string.IsNullOrEmpty(startTime) ? null : DateTime.Parse(startTime),
-                string.IsNullOrEmpty(endTime) ? null : DateTime.Parse(endTime),
-                selectedClasses.Select(i => int.Parse(i.Key)).ToList(),
-                bonusWork, overtime,
-                string.IsNullOrEmpty(overtimeMinutes) ? null : int.Parse(overtimeMinutes),
-                overtimeReason, note);
+            var result = await CheckinService.CheckInAsync(WorkPlanId, overtime, overtime ? int.Parse(overtimeMinutes) : 0, note);
 
             if (!result)
             {

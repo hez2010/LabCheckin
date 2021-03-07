@@ -1,11 +1,11 @@
-﻿using LabCheckin.Shared.Extensions;
-using LabCheckin.Shared.Models;
-using LabCheckin.Shared.Services;
+﻿using LabCenter.Shared.Extensions;
+using LabCenter.Shared.Models;
+using LabCenter.Shared.Services;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace LabCheckin.Client.Services
+namespace LabCenter.Client.Services
 {
     public class UserService : IUserService
     {

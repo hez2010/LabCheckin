@@ -1,11 +1,11 @@
-﻿using LabCheckin.Server.Data;
-using LabCheckin.Server.Models;
-using LabCheckin.Shared.Models;
+﻿using LabCenter.Server.Data;
+using LabCenter.Server.Models;
+using LabCenter.Shared.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace LabCheckin.Server.Controllers
+namespace LabCenter.Server.Controllers
 {
     [ApiController]
     [Route("/api/users")]
@@ -28,7 +28,7 @@ namespace LabCheckin.Server.Controllers
             if (result.Succeeded)
             {
                 var user = await userManager.FindByNameAsync(model.UserName);
-                return new JsonResultModel<UserInfo>(new(user.Id, user.UserName, user.Name));
+                return new UserInfo(user.Id, user.UserName, user.Name, user.Admin);
             }
 
             return new UnauthorizedModel<UserInfo>("用户名或密码不正确");
@@ -46,7 +46,7 @@ namespace LabCheckin.Server.Controllers
             }
 
             var user = await userManager.GetUserAsync(User);
-            return new JsonResultModel<UserInfo>(new(user.Id, user.UserName, user.Name));
+            return new UserInfo(user.Id, user.UserName, user.Name, user.Admin);
         }
 
         [Route("password"), HttpPost]
@@ -62,7 +62,7 @@ namespace LabCheckin.Server.Controllers
 
             if (result.Succeeded)
             {
-                return new JsonResultModel<bool>(true);
+                return true;
             }
 
             return new BadRequestModel<bool>("密码不正确");

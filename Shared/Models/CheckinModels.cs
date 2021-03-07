@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace LabCheckin.Shared.Models
+﻿namespace LabCenter.Shared.Models
 {
-    public record CheckinModel(DateTime Date, WorkType Type, Room Room, DateTime? StartTime, DateTime? EndTime, List<int>? Classes, bool Bonus, bool Overtime, int? OvertimeMinutes, string? OvertimeReason, string? Note);
+    public record CheckinModel(int WorkPlanId, bool Overtime, int OvertimeMinutes, string? Note);
+    public record CheckinRecordModel(int Id, WorkPlanModel WorkPlan, bool OverTime, int OvertimeMinutes, string? Note);
 }

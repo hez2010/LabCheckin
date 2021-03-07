@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace LabCheckin.Shared.Extensions
+namespace LabCenter.Shared.Extensions
 {
     public static class JsonExtensions
     {

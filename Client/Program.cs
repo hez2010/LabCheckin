@@ -2,12 +2,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using BlazorFluentUI;
-using LabCheckin.Shared.Services;
-using LabCheckin.Client.Services;
+using LabCenter.Shared.Services;
+using LabCenter.Client.Services;
 using System;
 using System.Net.Http;
 
-namespace LabCheckin.Client
+namespace LabCenter.Client
 {
     public class Program
     {

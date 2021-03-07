@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using LabCheckin.Server.Data;
+using LabCenter.Server.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.Linq;
-using LabCheckin.Server.Services;
-using LabCheckin.Shared.Services;
+using LabCenter.Server.Services;
+using LabCenter.Shared.Services;
 using BlazorFluentUI;
 
-namespace LabCheckin.Server
+namespace LabCenter.Server
 {
     public class Startup
     {
@@ -47,7 +47,6 @@ namespace LabCheckin.Server
             {
                 options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection"));
-                options.UseLazyLoadingProxies();
             });
 
             services.AddDatabaseDeveloperPageExceptionFilter();

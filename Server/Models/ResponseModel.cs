@@ -6,7 +6,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace LabCheckin.Server.Models
+namespace LabCenter.Server.Models
 {
     public abstract record ResponseModel<T>(string? Message, T? Data, int Code) : IActionResult
     {
@@ -24,7 +24,7 @@ namespace LabCheckin.Server.Models
                     if (s.FileName is not null)
                     {
                         context.HttpContext.Response.Headers
-                            .Add("Content-Disposition", $"inline; filename=\"{Uri.EscapeUriString(s.FileName)}\"");
+                            .Add("Content-Disposition", $"inline; filename=\"{Uri.EscapeDataString(s.FileName)}\"");
                     }
                     var executor = context.HttpContext.RequestServices.GetRequiredService<IActionResultExecutor<FileStreamResult>>();
                     await executor.ExecuteAsync(context, new FileStreamResult(s.Stream, s.ContentType));
@@ -35,6 +35,8 @@ namespace LabCheckin.Server.Models
                     break;
             }
         }
+
+        public static implicit operator ResponseModel<T>(T? data) => new JsonResultModel<T>(data);
     }
 
     public abstract record OkResponseModel<T>(string? Message, T? Data) : ResponseModel<T>(Message, Data, 200);

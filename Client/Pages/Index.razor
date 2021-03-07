@@ -6,13 +6,29 @@
 
 <p>暂未实现</p>
 
+<BFUPrimaryButton Text="签到" @ref="calloutTarget" OnClick="CalloutHidden_Click"></BFUPrimaryButton>
+
+@if (!calloutHidden)
+{
+    <BFUCallout FabricComponentTarget="calloutTarget">
+        <div style="max-width: 300px; padding: 20px;">
+            <Checkin WorkPlanId="1" />
+        </div>
+    </BFUCallout>
+}
+
 @code {
+    BFUComponentBase? calloutTarget;
+    bool calloutHidden;
+
     private readonly List<BFUDropdownOption> classrooms =
-        Enum.GetValues<Room>().Select(i => new BFUDropdownOption
-        {
-            Text = Enum.GetName<Room>(i)!,
-            Key = i.ToString()
-        }).ToList();
+    Enum.GetValues<Room>().Select(i => new BFUDropdownOption
+    {
+        Text = Enum.GetName<Room>(i)!,
+        Key = i.ToString()
+    }).ToList();
+
+    private void CalloutHidden_Click(MouseEventArgs args) => calloutHidden = !calloutHidden;
 
     private Task Classroom_Changed(BFUDropdownChangeArgs args)
     {

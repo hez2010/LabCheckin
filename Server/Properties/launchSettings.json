@@ -16,7 +16,7 @@
           "DOTNET_ENVIRONMENT": "Development"
         }
       },
-      "LabCheckin.Server": {
+      "LabCenter.Server": {
         "commandName": "Project",
         "dotnetRunMessages": "true",
         "launchBrowser": true,

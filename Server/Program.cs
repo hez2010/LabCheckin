@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace LabCheckin.Server
+namespace LabCenter.Server
 {
     public class Program
     {

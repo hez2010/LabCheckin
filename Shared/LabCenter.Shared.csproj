@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Nullable>enable</Nullable>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
 		<PlatformTarget>AnyCPU</PlatformTarget>
 	</PropertyGroup>

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LabCheckin.Server.Data
+namespace LabCenter.Server.Data
 {
     public class MonthlySalary
     {
@@ -12,6 +12,6 @@ namespace LabCheckin.Server.Data
         public int ValidHours { get; set; }
         public int RemainingHours { get; set; }
 
-        public virtual ApplicationUser User { get; set; } = default!;
+        public ApplicationUser User { get; set; } = default!;
     }
 }

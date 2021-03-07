@@ -1,23 +1,9 @@
-﻿using LabCheckin.Shared.Models;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace LabCheckin.Shared.Services
+namespace LabCenter.Shared.Services
 {
     public interface ICheckinService
     {
-        Task<bool> CheckInAsync(
-            DateTime date,
-            WorkType type,
-            Room room,
-            DateTime? startTime,
-            DateTime? endTime,
-            List<int>? classes,
-            bool bonus,
-            bool overtime,
-            int? overtimeMinutes,
-            string? overtimeReason,
-            string? note);
+        Task<bool> CheckInAsync(int workPlanId, bool overtime, int overtimeMinutes, string? note);
     }
 }

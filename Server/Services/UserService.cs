@@ -1,12 +1,12 @@
-﻿using LabCheckin.Server.Data;
-using LabCheckin.Shared.Models;
-using LabCheckin.Shared.Services;
+﻿using LabCenter.Server.Data;
+using LabCenter.Shared.Models;
+using LabCenter.Shared.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
 
-namespace LabCheckin.Server.Services
+namespace LabCenter.Server.Services
 {
     public class UserService : IUserService
     {
@@ -32,7 +32,7 @@ namespace LabCheckin.Server.Services
             if (claim is null) return null;
             var user = await userManager.GetUserAsync(claim);
             if (user is null) return null;
-            return new(user.Id, user.Name, user.UserName);
+            return new(user.Id, user.Name, user.UserName, user.Admin);
         }
 
         public Task<UserInfo?> SignInAsync(string userName, string password) => throw new NotImplementedException();
