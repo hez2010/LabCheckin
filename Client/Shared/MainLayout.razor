@@ -1,25 +1,28 @@
 ﻿@inherits LayoutComponentBase
 
-<MediaQuery Media="@Breakpoints.MediumUp">
-    <Matched>
-        <BFUStack Horizontal="true">
-            <BFUStackItem VerticalFill="true" Style="min-width: 250px">
-                <BFUStack>
-                    <BFUStackItem Align="Alignment.Center">
-                        <BFUText Variant="TextType.XLarge">实验室助理中心</BFUText>
-                    </BFUStackItem>
-                    <BFUStackItem>
-                        <NavMenu />
-                    </BFUStackItem>
-                </BFUStack>
+@if (DeviceProvider.IsMobile)
+{
+    <BFUPanel IsOpen="isPanelOpened" IsLightDismiss="true" OnDismiss="() => isPanelOpened = false">
+        <BFUStack>
+            <BFUStackItem Align="Alignment.Center">
+                <BFUText Variant="TextType.XLarge">实验室助理中心</BFUText>
             </BFUStackItem>
-            <BFUStackItem VerticalFill="true" Tokens="desktopTokens">
-                @Body
+            <BFUStackItem>
+                <NavMenu />
             </BFUStackItem>
         </BFUStack>
-    </Matched>
-    <Unmatched>
-        <BFUPanel IsOpen="isPanelOpened" IsLightDismiss="true" OnDismiss="() => isPanelOpened = false">
+    </BFUPanel>
+    <div style="position: absolute; right: 0; top: 0; padding: 20px">
+        <BFUActionButton IconName="NumberedListText" OnClick="NavMenu_Clicked">菜单</BFUActionButton>
+    </div>
+    <div style="padding: 0 20px">
+        @Body
+    </div>
+}
+else
+{
+    <BFUStack Horizontal="true">
+        <BFUStackItem VerticalFill="true" Style="min-width: 250px">
             <BFUStack>
                 <BFUStackItem Align="Alignment.Center">
                     <BFUText Variant="TextType.XLarge">实验室助理中心</BFUText>
@@ -28,17 +31,16 @@
                     <NavMenu />
                 </BFUStackItem>
             </BFUStack>
-        </BFUPanel>
-        <div style="position: absolute; right: 0; top: 0; padding: 20px">
-            <BFUActionButton IconName="NumberedListText" OnClick="NavMenu_Clicked">菜单</BFUActionButton>
-        </div>
-        <div style="padding: 0 20px">
+        </BFUStackItem>
+        <BFUStackItem VerticalFill="true" Tokens="desktopTokens">
             @Body
-        </div>
-    </Unmatched>
-</MediaQuery>
+        </BFUStackItem>
+    </BFUStack>
+}
 
 @code {
+    [Inject] private IDeviceProvider DeviceProvider { get; set; } = default!;
+
     private bool isPanelOpened;
 
     private readonly BFUStackItemTokens desktopTokens = new BFUStackItemTokens
@@ -49,5 +51,18 @@
     private void NavMenu_Clicked(MouseEventArgs args)
     {
         isPanelOpened = !isPanelOpened;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await DeviceProvider.InitAysnc();
+        DeviceProvider.PropertyChanged += (sender, args) =>
+        {
+            if (args.PropertyName == nameof(DeviceProvider.IsDesktop))
+            {
+                StateHasChanged();
+            }
+        };
     }
 }

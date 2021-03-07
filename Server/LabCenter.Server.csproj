@@ -29,5 +29,5 @@
 		<Watch Include="..\**\*.cs" />
 		<Watch Remove="..\**\*.g.cs" />
 	</ItemGroup>
-	
+
 </Project>

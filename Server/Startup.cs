@@ -75,6 +75,7 @@ namespace LabCenter.Server
             services.AddBlazorFluentUI();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICheckinService, CheckinService>();
+            services.AddScoped<IDeviceProvider, DeviceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
