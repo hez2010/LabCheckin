@@ -10,6 +10,7 @@ namespace LabCenter.Client.Services
 {
     public sealed class DeviceProvider : IDeviceProvider
     {
+        private const int WIDTH_THRESHOLD = 798;
         private static readonly List<WeakReference<DeviceProvider>> references = new();
         private readonly IJSRuntime jsRuntime;
         private static int width;
@@ -23,7 +24,7 @@ namespace LabCenter.Client.Services
             {
                 var oldWidth = width;
                 width = value;
-                if ((oldWidth > 798 && width <= 798) || oldWidth <= 798 && width > 798)
+                if ((oldWidth > WIDTH_THRESHOLD && width <= WIDTH_THRESHOLD) || oldWidth <= WIDTH_THRESHOLD && width > 798)
                 {
                     foreach (var i in references)
                     {
@@ -37,9 +38,11 @@ namespace LabCenter.Client.Services
             }
         }
 
-        public bool IsDesktop => Width > 798;
+        public bool IsDesktop => Width > WIDTH_THRESHOLD;
 
         public bool IsMobile => !IsDesktop;
+
+        public bool IsServerSide => false;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

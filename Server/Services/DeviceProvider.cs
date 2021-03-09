@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LabCenter.Server.Services
 {
-    public class DeviceProvider : IDeviceProvider
+    public sealed class DeviceProvider : IDeviceProvider
     {
         public DeviceProvider(IHttpContextAccessor httpContextAccessor)
         {
@@ -27,5 +27,6 @@ namespace LabCenter.Server.Services
 
         public void Dispose() { }
         public ValueTask InitAysnc() => ValueTask.CompletedTask;
+        public bool IsServerSide => true;
     }
 }

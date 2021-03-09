@@ -9,5 +9,6 @@ namespace LabCenter.Shared.Services
         ValueTask InitAysnc();
         bool IsDesktop { get; }
         bool IsMobile { get; }
+        bool IsServerSide { get; }
     }
 }

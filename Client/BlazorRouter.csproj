@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>hez2010</Authors>
+    <Description>An awesome router for Blazor.</Description>
+    <Copyright>hez2010</Copyright>
+    <PackageProjectUrl>https://github.com/hez2010/BlazorRouter</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/hez2010/BlazorRouter</RepositoryUrl>
+    <PackageReleaseNotes>Performance improvements and support server prerender</PackageReleaseNotes>
+    <PackageId>Hez2010.BlazorRouter</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Product>BlazorRouter</Product>
+    <Version>2.1.0</Version>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <Company>hez2010</Company>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.3" />
+  </ItemGroup>
+
+</Project>

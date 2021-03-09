@@ -28,7 +28,7 @@
         submitting = true;
         try
         {
-            var result = await CheckinService.CheckInAsync(WorkPlanId, overtime, overtime ? int.Parse(overtimeMinutes) : 0, note);
+            var result = await CheckinService.CheckinAsync(WorkPlanId, overtime, overtime ? int.Parse(overtimeMinutes) : 0, note);
 
             if (!result)
             {

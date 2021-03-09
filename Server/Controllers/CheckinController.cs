@@ -1,6 +1,7 @@
 ﻿using LabCenter.Server.Data;
 using LabCenter.Server.Models;
 using LabCenter.Shared.Models;
+using LabCenter.Shared.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,11 +16,13 @@ namespace LabCenter.Server.Controllers
     {
         private readonly ApplicationDbContext dbContext;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ICheckinService checkinService;
 
-        public CheckinController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public CheckinController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, ICheckinService checkinService)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
+            this.checkinService = checkinService;
         }
 
         [Route(""), HttpGet]
@@ -45,7 +48,7 @@ namespace LabCenter.Server.Controllers
             var records = await query.OrderByDescending(i => i.Id).Skip(skip).Take(count)
                 .Select(record =>
                     new CheckinRecordModel(record.Id,
-                        new(record.WorkPlan!.Id, record.WorkPlan.Type, record.WorkPlan.StartTime,
+                        new(record.WorkPlan.Id, record.WorkPlan.Type, record.WorkPlan.StartTime,
                             record.WorkPlan.EndTime, record.WorkPlan.ClassRoom,
                             record.WorkPlan.SalaryBonus, record.WorkPlan.Note),
                     record.Overtime, record.OvertimeMinutes, record.Note)).ToListAsync();

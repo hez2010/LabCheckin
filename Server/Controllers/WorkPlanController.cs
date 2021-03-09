@@ -67,7 +67,7 @@ namespace LabCenter.Server.Controllers
         }
 
         [Route(""), HttpPost]
-        public async Task<ResponseModel<List<int>>> AddWorkPlanAsync([FromBody] AddWorkPlanModel model)
+        public async Task<ResponseModel<List<int>>> AddWorkPlanAsync([FromBody] WorkPlanCreationModel model)
         {
             var user = await userManager.GetUserAsync(User);
             if (user is not { Admin: true })

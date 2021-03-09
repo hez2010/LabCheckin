@@ -1,10 +1,9 @@
-﻿@page "/"
+﻿@using BlazorRouter
 
 <h1>排班表</h1>
 
-<BFUDropdown ItemsSource="classrooms" Placeholder="请选择一间实验室" OnChange="Classroom_Changed" Style="width: 200px" Label="实验室" />
+<BFUDatePicker Placeholder="请选择日期" @bind-Value="pickedDate" Style="width: 200px" Label="日期" OnSelectDate="SelectedDate_Changed" />
 
-<p>暂未实现</p>
 
 <BFUPrimaryButton Text="签到" @ref="calloutTarget" OnClick="CalloutHidden_Click"></BFUPrimaryButton>
 
@@ -20,20 +19,12 @@
 @code {
     BFUComponentBase? calloutTarget;
     bool calloutHidden;
-
-    private readonly List<BFUDropdownOption> classrooms =
-    Enum.GetValues<Room>().Select(i => new BFUDropdownOption
-    {
-        Text = Enum.GetName<Room>(i)!,
-        Key = i.ToString()
-    }).ToList();
+    DateTime pickedDate;
 
     private void CalloutHidden_Click(MouseEventArgs args) => calloutHidden = !calloutHidden;
 
-    private Task Classroom_Changed(BFUDropdownChangeArgs args)
+    private void SelectedDate_Changed(DateTime selectedDate)
     {
-        var room = Enum.Parse<Room>(args.Option.Key);
-
-        return Task.CompletedTask;
+        Console.WriteLine(selectedDate);
     }
 }

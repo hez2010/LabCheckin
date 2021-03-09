@@ -1,4 +1,5 @@
 ﻿using LabCenter.Shared.Models;
+using LabCenter.Shared.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,7 +22,7 @@ namespace LabCenter.Server.Data
             set
             {
                 startTime = value;
-                DayIndex = value.Date.Ticks;
+                DayIndex = value.GetDayIndex();
             }
         }
         public DateTimeOffset EndTime { get; set; }

@@ -1,21 +1,21 @@
 ﻿<BFUNav>
     <BFUNavLinkGroup Name="主页" CollapseByDefault="false">
-        <BFUNavLink Name="排班" Url="/" NavMatchType="NavMatchType.AnchorIncluded" Id="" />
-        <BFUNavLink Name="签到" Url="/checkin" NavMatchType="NavMatchType.AnchorIncluded" Id="checkin" />
+        <BFUNavLink Name="排班" Url="/" NavMatchType="NavMatchType.AnchorIncluded" Icon="Calendar" Id="" />
+        <BFUNavLink Name="签到" Url="/checkin" NavMatchType="NavMatchType.AnchorIncluded" Icon="Accept" Id="checkin" />
     </BFUNavLinkGroup>
     <BFUNavLinkGroup Name="薪酬" CollapseByDefault="false">
-        <BFUNavLink Name="薪酬计算" Url="/salary" NavMatchType="NavMatchType.AnchorIncluded" Id="salary" />
-        <BFUNavLink Name="历史薪酬记录" Url="/history" NavMatchType="NavMatchType.AnchorIncluded" Id="history" />
+        <BFUNavLink Name="薪酬计算" Url="/salary" NavMatchType="NavMatchType.AnchorIncluded" Icon="Calculator" Id="salary" />
+        <BFUNavLink Name="历史薪酬记录" Url="/history" NavMatchType="NavMatchType.AnchorIncluded" Icon="List" Id="history" />
     </BFUNavLinkGroup>
     <BFUNavLinkGroup Name="账户" CollapseByDefault="false">
         @if (UserInfo is null)
         {
-            <BFUNavLink Name="登录" Url="/signin" NavMatchType="NavMatchType.AnchorIncluded" Id="signin" />
+            <BFUNavLink Name="登录" Url="/signin" NavMatchType="NavMatchType.AnchorIncluded" Icon="Signin" Id="signin" />
         }
         else
         {
-            <BFUNavLink Name="个人信息" Url="/profile" NavMatchType="NavMatchType.AnchorIncluded" Id="profile" />
-            <BFUNavLink Name="退出" OnClick="SignOutAsync" />
+            <BFUNavLink Name="个人信息" Url="/profile" NavMatchType="NavMatchType.AnchorIncluded" Icon="TextDocumentShared" Id="profile" />
+            <BFUNavLink Name="退出" OnClick="SignOutAsync" Icon="SignOut" />
         }
     </BFUNavLinkGroup>
 </BFUNav>
