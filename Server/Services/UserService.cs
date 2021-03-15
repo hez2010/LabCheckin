@@ -32,7 +32,7 @@ namespace LabCenter.Server.Services
             if (claim is null) return null;
             var user = await userManager.GetUserAsync(claim);
             if (user is null) return null;
-            return new(user.Id, user.Name, user.UserName, user.Admin);
+            return new(user.Id, user.UserName, user.Name, user.Admin);
         }
 
         public Task<UserInfo?> SignInAsync(string userName, string password) => throw new NotImplementedException();

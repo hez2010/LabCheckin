@@ -1,14 +1,25 @@
-﻿<h1>个人信息</h1>
+﻿@inject GlobalStates States
+@inject IUserService UserService
 
-@if (UserInfo is null)
+@if (States.UserInfo is null)
 {
-    <p>未登录账户</p>
+    <h1>登录账户</h1>
+
+    <BFUTextField Style="width: 250px" Label="用户名" Placeholder="学号" @bind-Value="userName"></BFUTextField>
+    <BFUTextField Style="width: 250px" Label="密码" InputType="InputType.Password" Placeholder="初始密码与学号相同" @bind-Value="password"></BFUTextField>
+
+    <br />
+
+    <BFUPrimaryButton OnClick="SignIn_Clicked" Disabled="submitting">登录</BFUPrimaryButton>
+
 }
 else
 {
-    <p>编号：@UserInfo.Id</p>
-    <p>用户名：@UserInfo.UserName</p>
-    <p>姓名：@UserInfo.Name</p>
+    <h1>个人信息</h1>
+
+    <p>编号：@States.UserInfo.Id</p>
+    <p>用户名：@States.UserInfo.UserName</p>
+    <p>姓名：@States.UserInfo.Name</p>
 
     <br />
     <BFUTextField Label="原密码" InputType="InputType.Password" @bind-Value="oldPassword" />
@@ -16,20 +27,21 @@ else
     <BFUTextField Label="确认密码" InputType="InputType.Password" @bind-Value="confirmPassword" />
     <br />
     <BFUPrimaryButton OnClick="ChangePasswordAsync" Disabled="submitting">修改密码</BFUPrimaryButton>
+    <BFUDefaultButton OnClick="SignOutAsync">退出账户</BFUDefaultButton>
+}
 
-    if (message is not null)
-    {
-        <p style="@style">@message</p>
-    }
+@if (message is not null)
+{
+    <p style="@style">@message</p>
 }
 
 @code {
-    [CascadingParameter(Name = "UserInfo")] private UserInfo? UserInfo { get; set; }
-    [Inject] IUserService UserService { get; set; } = default!;
+    private string userName = "";
+    private string password = "";
 
     private string oldPassword = "", newPassword = "", confirmPassword = "";
     private string? message;
-    private string style = "";
+    private string? style;
     private bool submitting;
 
     private async Task ChangePasswordAsync(MouseEventArgs args)
@@ -44,13 +56,51 @@ else
                 return;
             }
 
-            await UserService.ChangePasswordAsync(oldPassword, newPassword);
-            style = "";
-            message = "密码修改成功";
+            if (await UserService.ChangePasswordAsync(oldPassword, newPassword))
+            {
+                style = null;
+                message = "密码修改成功";
+                oldPassword = newPassword = confirmPassword = "";
+            }
+            else
+            {
+                style = "color: red";
+                message = "密码修改失败";
+            }
         }
         finally
         {
             submitting = false;
         }
+    }
+
+    private async Task SignIn_Clicked(MouseEventArgs args)
+    {
+        submitting = true;
+        try
+        {
+            var userInfo = await UserService.SignInAsync(userName, password);
+            States.UserInfo = userInfo;
+            if (userInfo is null)
+            {
+                style = "color: red";
+                message = "用户名或密码不正确";
+            }
+            else
+            {
+                message = style = null;
+                userName = password = "";
+            }
+        }
+        finally
+        {
+            submitting = false;
+        }
+    }
+
+    private async Task SignOutAsync()
+    {
+        await UserService.SignOutAsync();
+        States.UserInfo = null;
     }
 }

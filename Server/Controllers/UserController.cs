@@ -3,7 +3,9 @@ using LabCenter.Server.Models;
 using LabCenter.Shared.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
+using static LabCenter.Server.Middlewares.CredentialsFilter;
 
 namespace LabCenter.Server.Controllers
 {
@@ -20,6 +22,27 @@ namespace LabCenter.Server.Controllers
             this.userManager = userManager;
         }
 
+        [Route("signup"), HttpPost]
+        public async Task<ResponseModel<UserInfo>> SignUpAsync([FromBody] SignUpModel model)
+        {
+            var userInfo = new ApplicationUser
+            {
+                Admin = false,
+                Email = model.Email,
+                Name = model.Name,
+                UserName = model.UserName
+            };
+
+            var result = await userManager.CreateAsync(userInfo, model.Password);
+
+            if (result.Succeeded)
+            {
+                return new UserInfo(userInfo.Id, userInfo.UserName, userInfo.Name, userInfo.Admin);
+            }
+
+            return new BadRequestModel<UserInfo>(result.Errors.Select(i => i.Description).Aggregate((accu, next) => $"{accu}, {next}"));
+        }
+
         [Route("signin"), HttpPost]
         public async Task<ResponseModel<UserInfo>> SignInAsync([FromBody] SignInModel model)
         {
@@ -34,29 +57,19 @@ namespace LabCenter.Server.Controllers
             return new UnauthorizedModel<UserInfo>("用户名或密码不正确");
         }
 
-        [Route("signout"), HttpPost]
+        [Route("signout"), RequireSignIn, HttpPost]
         public Task SignOutAsync() => signInManager.SignOutAsync();
 
-        [Route("profile"), HttpGet]
+        [Route("profile"), RequireSignIn, HttpGet]
         public async Task<ResponseModel<UserInfo>> GetProfileAsync()
         {
-            if (!signInManager.IsSignedIn(User))
-            {
-                return new UnauthorizedModel<UserInfo>("未登录");
-            }
-
             var user = await userManager.GetUserAsync(User);
             return new UserInfo(user.Id, user.UserName, user.Name, user.Admin);
         }
 
-        [Route("password"), HttpPost]
+        [Route("password"), RequireSignIn, HttpPost]
         public async Task<ResponseModel<bool>> ChangePasswordAsync([FromBody] ChangePasswordModel model)
         {
-            if (!signInManager.IsSignedIn(User))
-            {
-                return new UnauthorizedModel<bool>("未登录");
-            }
-
             var user = await userManager.GetUserAsync(User);
             var result = await userManager.ChangePasswordAsync(user, model.OldPaassword, model.NewPassword);
 

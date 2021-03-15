@@ -10,30 +10,15 @@ namespace LabCenter.Server.Models
 {
     public abstract record ResponseModel<T>(string? Message, T? Data, int Code) : IActionResult
     {
-        private readonly static JsonSerializerOptions options = new()
+        protected readonly static JsonSerializerOptions options = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
 
-        public async Task ExecuteResultAsync(ActionContext context)
+        public virtual async Task ExecuteResultAsync(ActionContext context)
         {
-            switch (this)
-            {
-                case StreamResultModel s:
-                    context.HttpContext.Response.StatusCode = Code;
-                    if (s.FileName is not null)
-                    {
-                        context.HttpContext.Response.Headers
-                            .Add("Content-Disposition", $"inline; filename=\"{Uri.EscapeDataString(s.FileName)}\"");
-                    }
-                    var executor = context.HttpContext.RequestServices.GetRequiredService<IActionResultExecutor<FileStreamResult>>();
-                    await executor.ExecuteAsync(context, new FileStreamResult(s.Stream, s.ContentType));
-                    break;
-                default:
-                    context.HttpContext.Response.StatusCode = Code;
-                    await JsonSerializer.SerializeAsync(context.HttpContext.Response.Body, new { Message, Data, Code }, options);
-                    break;
-            }
+            context.HttpContext.Response.StatusCode = Code;
+            await JsonSerializer.SerializeAsync(context.HttpContext.Response.Body, new { Message, Data, Code }, options);
         }
 
         public static implicit operator ResponseModel<T>(T? data) => new JsonResultModel<T>(data);
@@ -49,5 +34,19 @@ namespace LabCenter.Server.Models
     public record BadRequestModel<T>(string? Message = default, T? Data = default) : ErrorResponseModel<T>(Message, 400, Data);
     public record JsonResultModel<T>(T? Data, string? Message = default) : OkResponseModel<T>(Message, Data);
     public record StreamResultModel(Stream Stream, string? FileName = default,
-        string ContentType = "application/octet-stream") : OkResponseModel<Stream>(default, Stream);
+        string ContentType = "application/octet-stream") : OkResponseModel<Stream>(default, Stream)
+    {
+        public override async Task ExecuteResultAsync(ActionContext context)
+        {
+            context.HttpContext.Response.StatusCode = Code;
+            if (FileName is not null)
+            {
+                context.HttpContext.Response.Headers
+                    .Add("Content-Disposition", $"inline; filename=\"{Uri.EscapeDataString(FileName)}\"");
+            }
+
+            var executor = context.HttpContext.RequestServices.GetRequiredService<IActionResultExecutor<FileStreamResult>>();
+            await executor.ExecuteAsync(context, new FileStreamResult(Stream, ContentType));
+        }
+    }
 }

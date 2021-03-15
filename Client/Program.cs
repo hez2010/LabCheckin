@@ -19,7 +19,8 @@ namespace LabCenter.Client
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ICheckinService, CheckinService>();
             builder.Services.AddScoped<IDeviceProvider, DeviceProvider>();
-            builder.Services.AddTransient(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped<GlobalStates>();
 
             await builder.Build().RunAsync();
         }

@@ -76,6 +76,7 @@ namespace LabCenter.Server
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICheckinService, CheckinService>();
             services.AddScoped<IDeviceProvider, DeviceProvider>();
+            services.AddScoped<GlobalStates>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

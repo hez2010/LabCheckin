@@ -1,4 +1,5 @@
-﻿using LabCenter.Shared.Extensions;
+﻿using LabCenter.Client.Models;
+using LabCenter.Shared.Extensions;
 using LabCenter.Shared.Models;
 using LabCenter.Shared.Services;
 using System.Net.Http;
@@ -27,14 +28,14 @@ namespace LabCenter.Client.Services
         {
             var response = await httpClient.GetAsync("/api/users/profile");
             if (!response.IsSuccessStatusCode) return null;
-            return await response.Content.ReadFromJsonAsyncWithExceptionHandled<UserInfo>();
+            return (await response.Content.ReadFromJsonAsyncWithExceptionHandled<ResponseModel<UserInfo>>())?.Data;
         }
 
         public async Task<UserInfo?> SignInAsync(string userName, string password)
         {
             var response = await httpClient.PostAsJsonAsync("/api/users/signin", new SignInModel(userName, password, true));
             if (!response.IsSuccessStatusCode) return null;
-            return await response.Content.ReadFromJsonAsyncWithExceptionHandled<UserInfo>();
+            return (await response.Content.ReadFromJsonAsyncWithExceptionHandled<ResponseModel<UserInfo>>())?.Data;
         }
 
         public async Task SignOutAsync()

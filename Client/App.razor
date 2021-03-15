@@ -1,23 +1,50 @@
 ﻿@inject IUserService UserService
+@inject GlobalStates States
+@inject ComponentApplicationState ApplicationState
+@using System.ComponentModel
+@using System.Text.Json
+@implements IDisposable
 
 <BFUTheme>
     <BFULayerHost>
-        <CascadingValue Name="UserInfo" Value="@userInfo">
-            <CascadingValue Name="SetUserInfo" Value="@setUserInfo">
-                <MainLayout />
-            </CascadingValue>
-        </CascadingValue>
+        <MainLayout />
     </BFULayerHost>
 </BFUTheme>
 
 @code {
-    private UserInfo? userInfo;
-    private Action<UserInfo?>? setUserInfo;
-
     protected override async Task OnInitializedAsync()
     {
+        ApplicationState.OnPersisting += PersistGlobalStates;
+        States.PropertyChanged += ChangeState;
+
+#warning Use ApplicationState.TryRedeemFromJson after related issues are fixed
+        if (ApplicationState.TryRedeemPersistedState(nameof(States.UserInfo), out var userInfo))
+        {
+            States.UserInfo = JsonSerializer.Deserialize<UserInfo>(userInfo);
+        }
+        else
+        {
+            States.UserInfo = await UserService.GetProfileAsync();
+        }
+
         await base.OnInitializedAsync();
-        setUserInfo = info => userInfo = info;
-        userInfo = await UserService.GetProfileAsync();
+    }
+
+    private Task PersistGlobalStates()
+    {
+#warning Use ApplicationState.PersistAsJson after related issues are fixed
+        ApplicationState.PersistState(nameof(States.UserInfo), JsonSerializer.SerializeToUtf8Bytes(States.UserInfo));
+        return Task.CompletedTask;
+    }
+
+    private void ChangeState(object? sender, PropertyChangedEventArgs args)
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        ApplicationState.OnPersisting -= PersistGlobalStates;
+        States.PropertyChanged -= ChangeState;
     }
 }
