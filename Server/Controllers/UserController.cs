@@ -23,7 +23,7 @@ namespace LabCenter.Server.Controllers
         }
 
         [Route("signup"), HttpPost]
-        public async Task<ResponseModel<UserInfo>> SignUpAsync([FromBody] SignUpModel model)
+        public async Task<Response<UserInfo>> SignUpAsync([FromBody] SignUpModel model)
         {
             var userInfo = new ApplicationUser
             {
@@ -40,11 +40,11 @@ namespace LabCenter.Server.Controllers
                 return new UserInfo(userInfo.Id, userInfo.UserName, userInfo.Name, userInfo.Admin);
             }
 
-            return new BadRequestModel<UserInfo>(result.Errors.Select(i => i.Description).Aggregate((accu, next) => $"{accu}, {next}"));
+            return new Response<UserInfo>.Error.BadRequest(result.Errors.Select(i => i.Description).Aggregate((accu, next) => $"{accu}, {next}"));
         }
 
         [Route("signin"), HttpPost]
-        public async Task<ResponseModel<UserInfo>> SignInAsync([FromBody] SignInModel model)
+        public async Task<Response<UserInfo>> SignInAsync([FromBody] SignInModel model)
         {
             var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
 
@@ -54,21 +54,21 @@ namespace LabCenter.Server.Controllers
                 return new UserInfo(user.Id, user.UserName, user.Name, user.Admin);
             }
 
-            return new UnauthorizedModel<UserInfo>("用户名或密码不正确");
+            return new Response<UserInfo>.Error.Unauthorized("用户名或密码不正确");
         }
 
         [Route("signout"), RequireSignIn, HttpPost]
         public Task SignOutAsync() => signInManager.SignOutAsync();
 
         [Route("profile"), RequireSignIn, HttpGet]
-        public async Task<ResponseModel<UserInfo>> GetProfileAsync()
+        public async Task<Response<UserInfo>> GetProfileAsync()
         {
             var user = await userManager.GetUserAsync(User);
             return new UserInfo(user.Id, user.UserName, user.Name, user.Admin);
         }
 
         [Route("password"), RequireSignIn, HttpPost]
-        public async Task<ResponseModel<bool>> ChangePasswordAsync([FromBody] ChangePasswordModel model)
+        public async Task<Response<bool>> ChangePasswordAsync([FromBody] ChangePasswordModel model)
         {
             var user = await userManager.GetUserAsync(User);
             var result = await userManager.ChangePasswordAsync(user, model.OldPaassword, model.NewPassword);
@@ -78,7 +78,7 @@ namespace LabCenter.Server.Controllers
                 return true;
             }
 
-            return new BadRequestModel<bool>("密码不正确");
+            return new Response<bool>.Error.BadRequest("密码不正确");
         }
     }
 }

@@ -25,12 +25,12 @@ namespace LabCenter.Server.Controllers
         }
 
         [Route(""), HttpGet]
-        public async Task<ResponseModel<PagingModel<WorkPlanModel>>> GetWorkPlanListAsync(DateTime startDate, DateTime endDate)
+        public async Task<Response<PagingModel<WorkPlanModel>>> GetWorkPlanListAsync(DateTime startDate, DateTime endDate)
         {
             var user = await userManager.GetUserAsync(User);
             if (user is null)
             {
-                return new UnauthorizedModel<PagingModel<WorkPlanModel>>("未登录账户");
+                return new Response<PagingModel<WorkPlanModel>>.Error.Unauthorized("未登录账户");
             }
 
             var plans = await dbContext.Plans.Where(i => i.Users.Any(j => j.Id == user.Id) && i.DayIndex >= startDate.Date.Ticks && i.DayIndex <= endDate.Date.Ticks)
@@ -46,12 +46,12 @@ namespace LabCenter.Server.Controllers
         }
 
         [Route("assign"), HttpPost]
-        public async Task<ResponseModel<bool>> AssignWorkPlanAsync([FromBody] AssignModel model)
+        public async Task<Response<bool>> AssignWorkPlanAsync([FromBody] AssignModel model)
         {
             var user = await userManager.GetUserAsync(User);
             if (user is not { Admin: true })
             {
-                return new UnauthorizedModel<bool>("没有权限访问");
+                return new Response<bool>.Error.Unauthorized("没有权限访问");
             }
 
             var plans = await dbContext.Plans.Where(i => model.WorkPlanIds.Contains(i.Id)).ToListAsync();
@@ -67,12 +67,12 @@ namespace LabCenter.Server.Controllers
         }
 
         [Route(""), HttpPost]
-        public async Task<ResponseModel<List<int>>> AddWorkPlanAsync([FromBody] WorkPlanCreationModel model)
+        public async Task<Response<List<int>>> AddWorkPlanAsync([FromBody] WorkPlanCreationModel model)
         {
             var user = await userManager.GetUserAsync(User);
             if (user is not { Admin: true })
             {
-                return new UnauthorizedModel<List<int>>("没有权限访问");
+                return new Response<List<int>>.Error.Unauthorized("没有权限访问");
             }
 
             var plans = new List<WorkPlan>();

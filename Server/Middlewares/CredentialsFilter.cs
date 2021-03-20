@@ -24,7 +24,7 @@ namespace LabCenter.Server.Middlewares
                 
                 if (!signInManager.IsSignedIn(context.HttpContext.User))
                 {
-                    context.Result = new UnauthorizedModel<object>("未登录");
+                    context.Result = new Response<object>.Error.Unauthorized("未登录");
                     return;
                 }
 
@@ -45,7 +45,7 @@ namespace LabCenter.Server.Middlewares
 
                 if (!signInManager.IsSignedIn(context.HttpContext.User))
                 {
-                    context.Result = new UnauthorizedModel<object>("未登录");
+                    context.Result = new Response<object>.Error.Unauthorized("未登录");
                     return;
                 }
 
@@ -54,7 +54,7 @@ namespace LabCenter.Server.Middlewares
 
                 if (userInfo is null || !userInfo.Admin)
                 {
-                    context.Result = new ForbiddenModel<object>("无权访问");
+                    context.Result = new Response<object>.Error.Forbidden("无权访问");
                     return;
                 }
 

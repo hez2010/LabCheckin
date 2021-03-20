@@ -26,17 +26,17 @@ namespace LabCenter.Server.Controllers
         }
 
         [Route(""), HttpGet]
-        public async Task<ResponseModel<PagingModel<CheckinRecordModel>>> GetCheckinRecordHistoryAsync(int skip = 0, int count = 10, string? userId = default)
+        public async Task<Response<PagingModel<CheckinRecordModel>>> GetCheckinRecordHistoryAsync(int skip = 0, int count = 10, string? userId = default)
         {
             var user = await userManager.GetUserAsync(User);
             if (user is null)
             {
-                return new UnauthorizedModel<PagingModel<CheckinRecordModel>>("未登录账户");
+                return new Response<PagingModel<CheckinRecordModel>>.Error.Unauthorized("未登录账户");
             }
 
             if (!user.Admin && !string.IsNullOrEmpty(userId) && userId != user.Id)
             {
-                return new ForbiddenModel<PagingModel<CheckinRecordModel>>("没有权限访问");
+                return new Response<PagingModel<CheckinRecordModel>>.Error.Forbidden("没有权限访问");
             }
 
             var query = (userId, user.Admin) switch
@@ -89,29 +89,29 @@ namespace LabCenter.Server.Controllers
         //}
 
         [Route(""), HttpPost]
-        public async Task<ResponseModel<int>> CheckinAsync([FromBody] CheckinModel model)
+        public async Task<Response<int>> CheckinAsync([FromBody] CheckinModel model)
         {
             var user = await userManager.GetUserAsync(User);
             if (user is null)
             {
-                return new UnauthorizedModel<int>("未登录账户");
+                return new Response<int>.Error.Unauthorized("未登录账户");
             }
 
             var workPlan = await dbContext.Plans.FirstOrDefaultAsync(i => i.Id == model.WorkPlanId);
 
             if (workPlan is null)
             {
-                return new NotFoundModel<int>("不存在此项工作");
+                return new Response<int>.Error.NotFound("不存在此项工作");
             }
 
             if (await dbContext.Records.AnyAsync(i => i.WorkPlanId == model.WorkPlanId && i.UserId == user.Id))
             {
-                return new BadRequestModel<int>("已存在签到记录");
+                return new Response<int>.Error.BadRequest("已存在签到记录");
             }
 
             if (workPlan.MaxUsers is > 0 && await dbContext.Records.CountAsync(i => i.WorkPlanId == model.WorkPlanId) > workPlan.MaxUsers)
             {
-                return new BadRequestModel<int>("超过最大允许的签到人数");
+                return new Response<int>.Error.BadRequest("超过最大允许的签到人数");
             }
 
             var record = new CheckinRecord
