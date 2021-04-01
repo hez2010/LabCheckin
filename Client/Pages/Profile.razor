@@ -5,12 +5,12 @@
 {
     <h1>登录账户</h1>
 
-    <BFUTextField Style="width: 250px" Label="用户名" Placeholder="学号" @bind-Value="userName"></BFUTextField>
-    <BFUTextField Style="width: 250px" Label="密码" InputType="InputType.Password" Placeholder="初始密码与学号相同" @bind-Value="password"></BFUTextField>
+    <TextField Style="width: 250px" Label="用户名" Placeholder="学号" @bind-Value="userName"></TextField>
+    <TextField Style="width: 250px" Label="密码" InputType="InputType.Password" Placeholder="初始密码与学号相同" @bind-Value="password"></TextField>
 
     <br />
 
-    <BFUPrimaryButton OnClick="SignIn_Clicked" Disabled="submitting">登录</BFUPrimaryButton>
+    <PrimaryButton OnClick="SignIn_Clicked" Disabled="submitting">登录</PrimaryButton>
 
 }
 else
@@ -22,12 +22,12 @@ else
     <p>姓名：@States.UserInfo.Name</p>
 
     <br />
-    <BFUTextField Label="原密码" InputType="InputType.Password" @bind-Value="oldPassword" />
-    <BFUTextField Label="新密码" InputType="InputType.Password" @bind-Value="newPassword" />
-    <BFUTextField Label="确认密码" InputType="InputType.Password" @bind-Value="confirmPassword" />
+    <TextField Label="原密码" InputType="InputType.Password" @bind-Value="oldPassword" />
+    <TextField Label="新密码" InputType="InputType.Password" @bind-Value="newPassword" />
+    <TextField Label="确认密码" InputType="InputType.Password" @bind-Value="confirmPassword" />
     <br />
-    <BFUPrimaryButton OnClick="ChangePasswordAsync" Disabled="submitting">修改密码</BFUPrimaryButton>
-    <BFUDefaultButton OnClick="SignOutAsync">退出账户</BFUDefaultButton>
+    <PrimaryButton OnClick="ChangePasswordAsync" Disabled="submitting">修改密码</PrimaryButton>
+    <DefaultButton OnClick="SignOutAsync">退出账户</DefaultButton>
 }
 
 @if (message is not null)

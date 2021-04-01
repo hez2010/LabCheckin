@@ -2,14 +2,12 @@
 @inject GlobalStates States
 @inject ComponentApplicationState ApplicationState
 @using System.ComponentModel
-@using System.Text.Json
 @implements IDisposable
 
-<BFUTheme>
-    <BFULayerHost>
-        <MainLayout />
-    </BFULayerHost>
-</BFUTheme>
+<Theme>
+    <MainLayout />
+    <LayerHost />
+</Theme>
 
 @code {
     protected override async Task OnInitializedAsync()
@@ -17,10 +15,9 @@
         ApplicationState.OnPersisting += PersistGlobalStates;
         States.PropertyChanged += ChangeState;
 
-#warning Use ApplicationState.TryRedeemFromJson after related issues are fixed
-        if (ApplicationState.TryRedeemPersistedState(nameof(States.UserInfo), out var userInfo))
+        if (ApplicationState.TryTakeAsJson<UserInfo>(nameof(States.UserInfo), out var userInfo))
         {
-            States.UserInfo = JsonSerializer.Deserialize<UserInfo>(userInfo);
+            States.UserInfo = userInfo;
         }
         else
         {
@@ -32,8 +29,7 @@
 
     private Task PersistGlobalStates()
     {
-#warning Use ApplicationState.PersistAsJson after related issues are fixed
-        ApplicationState.PersistState(nameof(States.UserInfo), JsonSerializer.SerializeToUtf8Bytes(States.UserInfo));
+        ApplicationState.PersistAsJson(nameof(States.UserInfo), States.UserInfo);
         return Task.CompletedTask;
     }
 

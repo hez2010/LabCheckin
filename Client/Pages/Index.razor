@@ -2,28 +2,20 @@
 
 <h1>排班表</h1>
 
-<BFUDatePicker Placeholder="请选择日期" @bind-Value="pickedDate" Style="width: 200px" Label="日期" OnSelectDate="SelectedDate_Changed" />
-
-<BFUPrimaryButton Text="签到" @ref="calloutTarget" OnClick="CalloutHidden_Click"></BFUPrimaryButton>
+<PrimaryButton Text="签到" @ref="calloutTarget" OnClick="CalloutHidden_Click"></PrimaryButton>
 
 @if (!calloutHidden)
 {
-    <BFUCallout FabricComponentTarget="calloutTarget">
+    <Callout FabricComponentTarget="calloutTarget">
         <div style="max-width: 300px; padding: 20px;">
             <Checkin WorkPlanId="1" />
         </div>
-    </BFUCallout>
+    </Callout>
 }
 
 @code {
-    BFUComponentBase? calloutTarget;
+    FluentUIComponentBase? calloutTarget;
     bool calloutHidden;
-    DateTime pickedDate;
 
     private void CalloutHidden_Click(MouseEventArgs args) => calloutHidden = !calloutHidden;
-
-    private void SelectedDate_Changed(DateTime selectedDate)
-    {
-        Console.WriteLine(selectedDate);
-    }
 }

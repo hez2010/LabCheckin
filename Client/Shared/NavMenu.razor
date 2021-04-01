@@ -1,22 +1,23 @@
 ﻿@inject GlobalStates States
+@using BlazorFluentUI.Routing
 
-<BFUNav>
-    <BFUNavLinkGroup Name="主页" CollapseByDefault="false">
-        <BFUNavLink Name="排班" Url="/" NavMatchType="NavMatchType.AnchorIncluded" Icon="Calendar" Id="" />
-        <BFUNavLink Name="签到" Url="/checkin" NavMatchType="NavMatchType.AnchorIncluded" Icon="Accept" Id="checkin" />
-    </BFUNavLinkGroup>
-    <BFUNavLinkGroup Name="薪酬" CollapseByDefault="false">
-        <BFUNavLink Name="薪酬计算" Url="/salary" NavMatchType="NavMatchType.AnchorIncluded" Icon="Calculator" Id="salary" />
-        <BFUNavLink Name="历史薪酬记录" Url="/history" NavMatchType="NavMatchType.AnchorIncluded" Icon="List" Id="history" />
-    </BFUNavLinkGroup>
-    <BFUNavLinkGroup Name="账户" CollapseByDefault="false">
+<Nav>
+    <NavLinkGroup Name="主页" CollapseByDefault="false">
+        <BlazorFluentUI.Routing.NavLink Name="排班" Url="/" NavMatchType="NavMatchType.AnchorIncluded" IconName="Calendar" Id="" />
+        <BlazorFluentUI.Routing.NavLink Name="签到" Url="/checkin" NavMatchType="NavMatchType.AnchorIncluded" IconName="Accept" Id="checkin" />
+    </NavLinkGroup>
+    <NavLinkGroup Name="薪酬" CollapseByDefault="false">
+        <BlazorFluentUI.Routing.NavLink Name="薪酬计算" Url="/salary" NavMatchType="NavMatchType.AnchorIncluded" IconName="Calculator" Id="salary" />
+        <BlazorFluentUI.Routing.NavLink Name="历史薪酬记录" Url="/history" NavMatchType="NavMatchType.AnchorIncluded" IconName="List" Id="history" />
+    </NavLinkGroup>
+    <NavLinkGroup Name="账户" CollapseByDefault="false">
         @if (States.UserInfo is null)
         {
-            <BFUNavLink Name="登录" Url="/profile" NavMatchType="NavMatchType.AnchorIncluded" Icon="Signin" Id="profile" />
+            <BlazorFluentUI.Routing.NavLink Name="登录" Url="/profile" NavMatchType="NavMatchType.AnchorIncluded" IconName="Signin" Id="profile" />
         }
         else
         {
-            <BFUNavLink Name="我的" Url="/profile" NavMatchType="NavMatchType.AnchorIncluded" Icon="TextDocumentShared" Id="profile" />
+            <BlazorFluentUI.Routing.NavLink Name="我的" Url="/profile" NavMatchType="NavMatchType.AnchorIncluded" IconName="TextDocumentShared" Id="profile" />
         }
-    </BFUNavLinkGroup>
-</BFUNav>
+    </NavLinkGroup>
+</Nav>

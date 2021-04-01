@@ -2,18 +2,18 @@
 
 @if (DeviceProvider.IsMobile)
 {
-    <BFUPanel IsOpen="isPanelOpened" IsLightDismiss="true" OnDismiss="() => isPanelOpened = false">
-        <BFUStack>
-            <BFUStackItem Align="Alignment.Center">
-                <BFUText Variant="TextType.XLarge">实验室助理中心</BFUText>
-            </BFUStackItem>
-            <BFUStackItem>
+    <Panel IsOpen="isPanelOpened" IsLightDismiss="true" OnDismiss="() => isPanelOpened = false">
+        <Stack>
+            <StackItem Align="Alignment.Center">
+                <Text Variant="TextType.XLarge">实验室助理中心</Text>
+            </StackItem>
+            <StackItem>
                 <NavMenu />
-            </BFUStackItem>
-        </BFUStack>
-    </BFUPanel>
+            </StackItem>
+        </Stack>
+    </Panel>
     <div style="position: absolute; right: 0; top: 0; padding: 20px">
-        <BFUActionButton IconName="NumberedListText" OnClick="NavMenu_Clicked">菜单</BFUActionButton>
+        <ActionButton IconName="NumberedListText" OnClick="NavMenu_Clicked">菜单</ActionButton>
     </div>
     <div style="padding: 0 20px">
         <RoutedContent />
@@ -21,21 +21,21 @@
 }
 else
 {
-    <BFUStack Horizontal="true">
-        <BFUStackItem VerticalFill="true" Style="min-width: 250px">
-            <BFUStack>
-                <BFUStackItem Align="Alignment.Center">
-                    <BFUText Variant="TextType.XLarge">实验室助理中心</BFUText>
-                </BFUStackItem>
-                <BFUStackItem>
+    <Stack Horizontal="true">
+        <StackItem VerticalFill="true" Style="min-width: 250px">
+            <Stack>
+                <StackItem Align="Alignment.Center">
+                    <Text Variant="TextType.XLarge">实验室助理中心</Text>
+                </StackItem>
+                <StackItem>
                     <NavMenu />
-                </BFUStackItem>
-            </BFUStack>
-        </BFUStackItem>
-        <BFUStackItem VerticalFill="true" Tokens="desktopTokens">
+                </StackItem>
+            </Stack>
+        </StackItem>
+        <StackItem VerticalFill="true" Tokens="desktopTokens">
             <RoutedContent />
-        </BFUStackItem>
-    </BFUStack>
+        </StackItem>
+    </Stack>
 }
 
 @code {
@@ -43,7 +43,7 @@ else
 
     private bool isPanelOpened;
 
-    private readonly BFUStackItemTokens desktopTokens = new BFUStackItemTokens
+    private readonly StackItemTokens desktopTokens = new StackItemTokens
     {
         Padding = new CssValue("0 0 0 20px")
     };

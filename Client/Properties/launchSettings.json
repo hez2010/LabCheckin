@@ -10,7 +10,9 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
+      "dotnetRunMessages": "true",
       "launchBrowser": true,
+      "hotReloadProfile": "blazorwasm",
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"

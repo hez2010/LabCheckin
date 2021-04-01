@@ -1,13 +1,13 @@
 ﻿@inject ICheckinService CheckinService
 
-<BFUCheckbox @bind-Checked="overtime" Label="加班"></BFUCheckbox>
+<Checkbox @bind-Checked="overtime" Label="加班"></Checkbox>
 @if (overtime)
 {
-    <BFUTextField Label="加班分钟数" @bind-Value="overtimeMinutes"></BFUTextField>
+    <TextField Label="加班分钟数" @bind-Value="overtimeMinutes"></TextField>
 }
-<BFUTextField Label="备注" @bind-Value="note" Multiline="true" Resizable="true"></BFUTextField>
+<TextField Label="备注" @bind-Value="note" Multiline="true" Resizable="true"></TextField>
 <br />
-<BFUPrimaryButton Text="签到" OnClick="Checkin_Clicked" Disabled="submitting"></BFUPrimaryButton>
+<PrimaryButton Text="签到" OnClick="Checkin_Clicked" Disabled="submitting"></PrimaryButton>
 
 @if (message is not null)
 {
