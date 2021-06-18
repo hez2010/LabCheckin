@@ -55,7 +55,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
         await DeviceProvider.InitAysnc();
         DeviceProvider.PropertyChanged += (sender, args) =>
         {
@@ -64,5 +63,7 @@ else
                 StateHasChanged();
             }
         };
+        
+        await base.OnInitializedAsync();
     }
 }

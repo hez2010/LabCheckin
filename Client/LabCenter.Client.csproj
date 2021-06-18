@@ -4,15 +4,16 @@
 		<Nullable>enable</Nullable>
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
+		<RunAOTCompilation>true</RunAOTCompilation>
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="BlazorFluentUI.CoreComponents" Version="5.0.2-CI-20210330-134029" />
+		<PackageReference Include="BlazorFluentUI.CoreComponents" Version="5.3.2" />
 		<PackageReference Include="Hez2010.BlazorRouter" Version="2.1.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-preview.4.21201.5" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-preview.4.21201.5" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0-preview.4.21201.1" />
-		<PackageReference Include="System.Net.Http.Json" Version="6.0.0-preview.4.21201.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-preview.5.21301.17" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-preview.5.21301.17" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0-preview.5.21301.5" />
+		<PackageReference Include="System.Net.Http.Json" Version="6.0.0-preview.5.21301.5" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -2,6 +2,7 @@
 @inject GlobalStates States
 @inject ComponentApplicationState ApplicationState
 @using System.ComponentModel
+@using System.Text.Json
 @implements IDisposable
 
 <Theme>
@@ -15,13 +16,28 @@
         ApplicationState.OnPersisting += PersistGlobalStates;
         States.PropertyChanged += ChangeState;
 
-        if (ApplicationState.TryTakeAsJson<UserInfo>(nameof(States.UserInfo), out var userInfo))
+        try
         {
-            States.UserInfo = userInfo;
+
+            if (ApplicationState.TryTakePersistedState(nameof(States.UserInfo), out var userInfo))
+            {
+                try
+                {
+                    States.UserInfo = JsonSerializer.Deserialize<UserInfo>(userInfo);
+                }
+                catch
+                {
+                    States.UserInfo = await UserService.GetProfileAsync();
+                }
+            }
+            else
+            {
+                States.UserInfo = await UserService.GetProfileAsync();
+            }
         }
-        else
+        catch (Exception ex)
         {
-            States.UserInfo = await UserService.GetProfileAsync();
+            Console.WriteLine(ex.Message + "\n" + ex.StackTrace);
         }
 
         await base.OnInitializedAsync();
@@ -29,7 +45,7 @@
 
     private Task PersistGlobalStates()
     {
-        ApplicationState.PersistAsJson(nameof(States.UserInfo), States.UserInfo);
+        ApplicationState.PersistState(nameof(States.UserInfo), JsonSerializer.SerializeToUtf8Bytes(States.UserInfo));
         return Task.CompletedTask;
     }
 
