@@ -2,7 +2,6 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<PlatformTarget>AnyCPU</PlatformTarget>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
 		<RunAOTCompilation>true</RunAOTCompilation>
 	</PropertyGroup>
